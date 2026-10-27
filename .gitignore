@@ -1,0 +1,14 @@
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.idea/
+.vscode/
+build/
+coverage/
+.env
+.env.*
+!.env.example
+*.iml
+*.log
