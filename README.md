@@ -4,9 +4,9 @@ Aplicación administrativa multiplataforma para Dos con Hilo, construida con Flu
 
 ## Estado
 
-Incluye inicio de sesión por invitación, CRUD de productos, inventario, ventas con carrito, pedidos personalizados y pagos, dashboard e informe mensual con productos más vendidos. El CRUD y las operaciones reales dependen de RLS y funciones PostgreSQL; los scripts SQL están preparados en `supabase/manual/` y aún deben aplicarse al proyecto Supabase.
+Incluye inicio de sesión por invitación, CRUD de productos, inventario, ventas con carrito, pedidos personalizados y pagos, dashboard e informe mensual con productos más vendidos. El CRUD y las operaciones reales dependen de RLS y funciones PostgreSQL. Los tres scripts previos ya fueron aplicados al proyecto; el nuevo script de imágenes se debe ejecutar para habilitar la carga de fotos.
 
-La carga de fotos a Storage, exportación de reportes y pruebas de integración/RLS siguen pendientes. Productos usan por ahora un campo URL para la fotografía.
+Las fotos de productos se eligen desde galería o cámara y se guardan en Supabase Storage. La exportación de reportes y las pruebas de integración/RLS siguen pendientes.
 
 ## Requisitos y ejecución
 
@@ -24,13 +24,11 @@ Para usar otro proyecto, pasa `--dart-define=SUPABASE_URL=... --dart-define=SUPA
 
 ## Supabase
 
-Las tablas existentes son la fuente de verdad. **No ejecutes** `supabase/migrations/202610270001_initial_schema.sql` en ese proyecto. Revisa y aplica desde Supabase SQL Editor, en este orden:
+Las tablas existentes son la fuente de verdad. **No ejecutes** `supabase/migrations/202610270001_initial_schema.sql` en ese proyecto. Ya aplicaste los tres primeros scripts. Para activar la nueva carga de imágenes, ejecuta solo este archivo desde Supabase SQL Editor:
 
-1. `supabase/manual/20261027_complete_existing_rls.sql`
-2. `supabase/manual/20261027_order_payments_rpc.sql`
-3. `supabase/manual/20261027_sales_inventory_rpcs.sql`
+`supabase/manual/20261028_product_images_storage.sql`
 
-Estos scripts agregan políticas de lectura y columnas de idempotencia, y crean RPCs para abonos, ventas, cancelaciones y ajustes de inventario. No se han ejecutado desde este repositorio.
+Ese script prepara el bucket público `product-images` y restringe las cargas y borrados a integrantes autenticados dentro de la carpeta de su negocio. Los scripts se ejecutan manualmente desde Supabase SQL Editor, no desde este repositorio.
 
 Invita cada cuenta desde Supabase Auth y agrega su `user_id` a `business_members` con el UUID del negocio. La app no incluye una pantalla de invitaciones porque requeriría privilegios administrativos. La versión actual usa la primera membresía de cada usuaria y está pensada para un negocio por cuenta.
 
@@ -41,3 +39,4 @@ Invita cada cuenta desde Supabase Auth y agrega su `user_id` a `business_members
 - `supabase/manual`: cambios de seguridad y RPC para el esquema existente.
 - `supabase/migrations`: esquema inicial de referencia, no destinado al proyecto ya creado.
 - `docs`: modelo de seguridad y contrato para la landing independiente.
+- `assets/img`: coloca aquí el logo oficial para integrarlo y ajustar el tema a sus colores.

@@ -57,8 +57,14 @@ class _LoginPageState extends State<LoginPage> {
                 child: Form(
                   key: _formKey,
                   child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, mainAxisSize: MainAxisSize.min, children: [
-                    Icon(Icons.cottage_outlined, size: 42, color: theme.colorScheme.primary),
-                    const SizedBox(height: 16),
+                    Image.asset(
+                      'assets/img/Logo.jpeg',
+                      width: 196,
+                      height: 196,
+                      fit: BoxFit.contain,
+                      semanticLabel: 'Logo de Dos con Hilo',
+                    ),
+                    const SizedBox(height: 12),
                     Text('Dos con Hilo', textAlign: TextAlign.center, style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700)),
                     const SizedBox(height: 6),
                     Text('Ingresa a la administración', textAlign: TextAlign.center, style: theme.textTheme.bodyMedium),

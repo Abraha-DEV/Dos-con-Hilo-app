@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'product.dart';
@@ -6,6 +8,7 @@ class ProductsRepository {
   ProductsRepository(this._client);
 
   final SupabaseClient _client;
+  static const _productImagesBucket = 'product-images';
 
   Future<String?> _businessIdForCurrentUser() async {
     final user = _client.auth.currentUser;
@@ -31,6 +34,24 @@ class ProductsRepository {
         .order('name');
 
     return rows.map((row) => Product.fromJson(row)).toList(growable: false);
+  }
+
+  Future<String> uploadProductImage({
+    required String fileName,
+    required Uint8List bytes,
+    required String contentType,
+  }) async {
+    final businessId = await _businessIdForCurrentUser();
+    if (businessId == null) throw StateError('Tu usuario no tiene un negocio asignado.');
+    final extension = fileName.contains('.') ? fileName.split('.').last.toLowerCase() : 'jpg';
+    final safeExtension = RegExp(r'^[a-z0-9]{1,8}$').hasMatch(extension) ? extension : 'jpg';
+    final path = '$businessId/${DateTime.now().microsecondsSinceEpoch}.$safeExtension';
+    await _client.storage.from(_productImagesBucket).uploadBinary(
+          path,
+          bytes,
+          fileOptions: FileOptions(contentType: contentType, cacheControl: '3600', upsert: false),
+        );
+    return _client.storage.from(_productImagesBucket).getPublicUrl(path);
   }
 
   Future<void> createProduct({

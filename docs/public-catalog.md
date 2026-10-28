@@ -18,6 +18,6 @@ La landing conserva su código y despliegue independiente. En el esquema compart
 
 La consulta pública debe filtrar `business_id` al UUID configurado para Dos con Hilo y puede ordenar por nombre o fecha de actualización. Si se expone una vista, debe contener únicamente estos campos. No dar acceso público a `business_members`, ventas, clientes, pedidos ni movimientos.
 
-Al publicar un cambio, la landing verá el precio, publicación y existencia vigentes en su siguiente lectura. Para disponibilidad, el diseño debe decidir cómo mostrar `0` (agotado) y refrescar o revalidar caché. El esquema existente guarda `image_url`; hay que confirmar que esas URLs sean públicas y estables.
+Al publicar un cambio, la landing verá el precio, publicación y existencia vigentes en su siguiente lectura. Para disponibilidad, el diseño debe decidir cómo mostrar `0` (agotado) y refrescar o revalidar caché. Las fotos que sube la app se guardan en el bucket público `product-images` y `image_url` contiene la URL pública de Storage.
 
 Nunca agregar `service_role`, tokens de administración, ventas, clientes, pedidos ni información de pago a la landing. La clave anon es pública y la seguridad depende de grants y RLS.
